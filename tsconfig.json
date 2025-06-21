@@ -1,0 +1,29 @@
+/*
+Otherwise, regular ts-node is required into Cypress's Node.js runtime. 
+Since Node.js by itself can only interpret CommonJS files, 
+Cypress attempts to make your TypeScript configuration compatible with Cypress' 
+Node.js runtime. To do this, 
+Cypress overrides the following configuration values found inside your project's tsconfig.json:
+
+{
+  "module": "commonjs",
+  "moduleResolution": "node",
+  "preserveValueImports": false
+}
+
+This does not have an impact on your project or its TypeScript configuration settings. 
+This override only happens within the context of the Cypress runtime.
+
+see this:https://docs.cypress.io/app/tooling/typescript-support
+**/
+
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["es5", "dom"],
+    "sourceMap": true,
+    "types": ["cypress", "node"],
+    "outDir": "dist"
+  },
+  "include": ["cypress/**/*.ts"]
+}

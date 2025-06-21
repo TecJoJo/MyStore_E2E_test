@@ -1,0 +1,23 @@
+{
+  "name": "mystore_e2e_test",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TecJoJo/MyStore_E2E_test.git"
+  },
+  "author": "Yao Lu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TecJoJo/MyStore_E2E_test/issues"
+  },
+  "homepage": "https://github.com/TecJoJo/MyStore_E2E_test#readme",
+  "description": "",
+  "devDependencies": {
+    "cypress": "^14.5.0",
+    "typescript": "^5.8.3"
+  }
+}
