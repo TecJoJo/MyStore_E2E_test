@@ -16,7 +16,7 @@ export const shoppingItem = {
   quantity: '[data-cy="shoppingItem-quantity"]',
   quantityIncrease: '[data-cy="shoppingItem-quantity-increase"]',
   quantityDecrease: '[data-cy="shoppingItem-quantity-decrease"]',
-  delete: '[data-cy="shoppingItem-delete"]',
+  ShoppingItemDelete: '[data-cy="shoppingItem-delete"]',
   price: '[data-cy="shoppingItem-price"]',
   shoppingItemContainer: '[data-cy="shoppingItem-container"]',
 };
