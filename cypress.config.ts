@@ -7,6 +7,7 @@ export default defineConfig({
     },
     env: {
       baseUrl: "http://localhost:5173",
+      serverUrl: "http://localhost:5146",
     },
   },
 });
