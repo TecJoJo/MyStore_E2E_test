@@ -45,9 +45,24 @@ declare namespace Cypress {
      * @example cy.dataCy('greeting')
      */
     getDataCy(value: string): Chainable<JQuery<HTMLElement>>;
+    login(email: string, password: string): Chainable<void>;
   }
 }
 
 Cypress.Commands.add("getDataCy", (value: string) => {
   return cy.get(`[data-cy=${value}]`);
+});
+
+Cypress.Commands.add("login", (email: string, password: string) => {
+  cy.request({
+    method: "POST",
+    url: `${Cypress.env("baseUrl")}/api/auth/login`,
+    body: {
+      email,
+      password,
+    },
+  }).then((response) => {
+    expect(response.status).to.eq(200);
+    expect(response.body.username).to.eq(email);
+  });
 });

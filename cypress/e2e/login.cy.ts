@@ -1,9 +1,6 @@
 import { loginSelectors } from "../selectors/loginSelectors";
 import { navigationBarSelectors } from "../selectors/navigationBarSelectors";
-const credential = {
-  email: "test@email.com",
-  password: "Password123",
-};
+import { credential } from "../models/constants";
 
 const wrongCrednetial = {
   email: "wrongCredential@email.com",
