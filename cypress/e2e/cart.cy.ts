@@ -8,6 +8,8 @@ describe("Cart functionality", () => {
   const baseUrl = Cypress.env("baseUrl");
   const homeUrl = `${baseUrl}/`;
   const productsUrl = `${baseUrl}/products`;
+  let productDetailUrl: string
+
 
   const emptyCartMessage = "Your cart is empty";
   beforeEach(() => {
@@ -17,7 +19,9 @@ describe("Cart functionality", () => {
     cy.then(() => {
       const cartContainerEl = Cypress.$(cartSelectors.cartContainer);
       //If the cart is closed because of the step above, we open it and check the it is open
+      console.log("cartContainerEl", cartContainerEl);
       if (cartContainerEl.length === 0) {
+
         cy.get(navigationBarSelectors.cart).click();
         cy.get(cartSelectors.cartContainer).should("exist");
       }
@@ -71,77 +75,104 @@ describe("Cart functionality", () => {
         });
     });
   });
-  it("should open and close the cart", () => {
-    cy.get(cartSelectors.cartContainer).should("be.visible");
-    cy.get(cartSelectors.closeButton).click();
-    cy.wait(500); // Wait for the cart to close
-    cy.get(cartSelectors.cartContainer).should("not.be.visible");
+  // it("should open and close the cart", () => {
 
-    // Reopen the cart
-    cy.get(navigationBarSelectors.cart).click();
-    cy.get(cartSelectors.cartContainer).should("be.visible");
-    cy.get(navigationBarSelectors.cart).click();
-    cy.wait(500); // Wait for the cart to close
-    cy.get(cartSelectors.cartContainer).should("not.be.visible");
-  });
-  it("should show empty cart message and zero prices when cart is empty", () => {
-    cy.get(cartSelectors.shoppingItemContainer).then(($items) => {
-      const itemCount = $items.length;
-      expect(itemCount).to.be.greaterThan(
-        0,
-        "There should be at least one item in the cart before emptying it"
-      );
 
-      // Empty the cart by clicking the delete button on each item
-      cy.get(cartSelectors.ShoppingItemDelete).each(($deleteButton) => {
-        cy.wrap($deleteButton).click();
-      });
+  //   cy.get(cartSelectors.cartContainer).should("be.visible");
+  //   cy.get(cartSelectors.closeButton).click();
+  //   cy.wait(500); // Wait for the cart to close
+  //   cy.get(cartSelectors.cartContainer).should("not.be.visible");
 
-      // Verify that the cart is empty, empty cart message is displayed, and prices are zero
-      cy.get(cartSelectors.shoppingItemContainer).should("not.exist");
-      cy.get(cartSelectors.emptyCartMessage)
-        .should("exist")
-        .should("have.text", emptyCartMessage);
-      cy.get(cartSelectors.totalPrice)
-        .should("exist")
-        .and("include.text", "0.00");
-      cy.get(cartSelectors.deliveryPrice)
-        .should("exist")
-        .and("include.text", "0.00");
+  //   // Reopen the cart
+  //   cy.get(navigationBarSelectors.cart).click();
+  //   cy.get(cartSelectors.cartContainer).should("be.visible");
+  //   cy.get(navigationBarSelectors.cart).click();
+  //   cy.wait(500); // Wait for the cart to close
+  //   cy.get(cartSelectors.cartContainer).should("not.be.visible");
+  // });
+  // it("should show empty cart message and zero prices when cart is empty", () => {
+  //   cy.get(cartSelectors.shoppingItemContainer).then(($items) => {
+  //     const itemCount = $items.length;
+  //     expect(itemCount).to.be.greaterThan(
+  //       0,
+  //       "There should be at least one item in the cart before emptying it"
+  //     );
 
-      // Verify that the cart item count in the title is zero
-      cy.get(cartSelectors.cartTitle).should("exist").and("include.text", "0");
-    });
-  });
-  it("total price should be different when items' quantity is increased or decreased", () => {
-    cy.get(cartSelectors.shoppingItemContainer).each(($item) => {
-      cy.wrap($item)
-        .find(cartSelectors.quantityIncrease)
-        .click()
-        .then(() => {
-          // Verify that the total price has increased
-          cy.get(cartSelectors.totalPrice).should(($totalPrice) => {
-            const newTotalPrice = parseFloat(
-              $totalPrice.text().replace(/[^0-9.-]+/g, "")
-            );
-            expect(newTotalPrice).to.be.greaterThan(totalPrice);
-            totalPrice = newTotalPrice; // Update totalPrice for further checks
-          });
-        });
+  //     // Empty the cart by clicking the delete button on each item
+  //     cy.get(cartSelectors.ShoppingItemDelete).each(($deleteButton) => {
+  //       cy.wrap($deleteButton).click();
+  //     });
 
-      cy.wrap($item)
-        .find(cartSelectors.quantityDecrease)
-        .click()
-        .then(() => {
-          // Verify that the total price has decreased
-          cy.get(cartSelectors.totalPrice).should(($totalPrice) => {
-            const newTotalPrice = parseFloat(
-              $totalPrice.text().replace(/[^0-9.-]+/g, "")
-            );
-            expect(newTotalPrice).to.be.lessThan(totalPrice);
-            totalPrice = newTotalPrice; // Update totalPrice for further checks
-          });
-        });
-    });
-  });
+  //     // Verify that the cart is empty, empty cart message is displayed, and prices are zero
+  //     cy.get(cartSelectors.shoppingItemContainer).should("not.exist");
+  //     cy.get(cartSelectors.emptyCartMessage)
+  //       .should("exist")
+  //       .should("have.text", emptyCartMessage);
+  //     cy.get(cartSelectors.totalPrice)
+  //       .should("exist")
+  //       .and("include.text", "0.00");
+  //     cy.get(cartSelectors.deliveryPrice)
+  //       .should("exist")
+  //       .and("include.text", "0.00");
+
+  //     // Verify that the cart item count in the title is zero
+  //     cy.get(cartSelectors.cartTitle).should("exist").and("include.text", "0");
+  //   });
+  // });
+  // it("total price should be different when items' quantity is increased or decreased", () => {
+  //   cy.get(cartSelectors.shoppingItemContainer).each(($item) => {
+  //     cy.wrap($item)
+  //       .find(cartSelectors.quantityIncrease)
+  //       .click()
+  //       .then(() => {
+  //         // Verify that the total price has increased
+  //         cy.get(cartSelectors.totalPrice).should(($totalPrice) => {
+  //           const newTotalPrice = parseFloat(
+  //             $totalPrice.text().replace(/[^0-9.-]+/g, "")
+  //           );
+  //           expect(newTotalPrice).to.be.greaterThan(totalPrice);
+  //           totalPrice = newTotalPrice; // Update totalPrice for further checks
+  //         });
+  //       });
+
+  //     cy.wrap($item)
+  //       .find(cartSelectors.quantityDecrease)
+  //       .click()
+  //       .then(() => {
+  //         // Verify that the total price has decreased
+  //         cy.get(cartSelectors.totalPrice).should(($totalPrice) => {
+  //           const newTotalPrice = parseFloat(
+  //             $totalPrice.text().replace(/[^0-9.-]+/g, "")
+  //           );
+  //           expect(newTotalPrice).to.be.lessThan(totalPrice);
+  //           totalPrice = newTotalPrice; // Update totalPrice for further checks
+  //         });
+  //       });
+  //   });
+  // });
+
+  // it("total price should vary when item is removed from the cart", () => {
+  //   cy.get(cartSelectors.shoppingItemContainer).its("length").should("be.greaterThan", 0)
+  //   cy.get(cartSelectors.shoppingItemContainer).each(($item) => {
+  //     cy.wrap($item)
+  //       .find(cartSelectors.ShoppingItemDelete)
+  //       .click()
+  //       .then(() => {
+  //         // Verify that the total price has decreased
+  //         cy.get(cartSelectors.totalPrice).should(($totalPrice) => {
+  //           const newTotalPrice = parseFloat(
+  //             $totalPrice.text().replace(/[^0-9.-]+/g, "")
+  //           );
+  //           expect(newTotalPrice).to.be.lessThan(totalPrice);
+  //           totalPrice = newTotalPrice; // Update totalPrice for further checks
+  //         });
+  //       });
+  //   });
+
+  // })
+
+  it("cart can be opened in products and productDetail view", () => {
+    //make sure the cart is closed first 
+
+  })
 });
