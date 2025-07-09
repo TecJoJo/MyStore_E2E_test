@@ -26,3 +26,6 @@ const fooSelectors = {
 ```
 # ChatGPT suggetions:
 https://chatgpt.com/share/686e3bce-3370-8000-a960-638bb0265d7b
+
+# Submodule and composition
+https://chatgpt.com/share/686e3e12-6fc4-8000-8378-356402028af1
